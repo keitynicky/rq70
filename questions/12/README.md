@@ -2,7 +2,7 @@
 
 このディレクトリをコピーして作業するとよいです。
 
-Q3を解く場合
+Q12を解く場合
 
 ```sh
 % cp -r questions/sample questions/12
