@@ -7,6 +7,7 @@ module Q13
   def run
     count = 0
     # permutationt→要チェック
+    # ↑配列の組み合わせを取得する。引数ゼロだから、組み合わせ1つを取得
     (0..9).to_a.permutation do |r, e, a, d, w, i, t, l, k, s|
       next if r == 0 or w == 0 or t == 0 or s == 0
       read = r * 1000 + e * 100 + a * 10 + d
@@ -35,6 +36,7 @@ module Q13
       end
       if !is_zero_first then
         # trって？？
+        # 並べた順番で置き換える。一番最初の文字のユニークな組み合わせで並べたもの
         e = expression.tr(chars.join(), seq.join())
         if eval(e) then
           puts e
