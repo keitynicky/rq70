@@ -63,7 +63,7 @@ end
 
 Benchmark.bm do |x|
   x.report do
-    $answer = Q13.run
+    $answer = Q13.run_reg
   end
 end
 
