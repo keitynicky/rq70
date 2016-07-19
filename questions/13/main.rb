@@ -59,11 +59,53 @@ module Q13
     }
     return count
   end
+
+  def run_03
+    count = 0
+    (0..9).to_a.permutation(6){|e, a, d, t, k, l|
+      if isTarget?(a + t) &&
+         isTarget?(a + e) &&
+         ((d + e + k) % 10 == l) &&
+         (((a + t + l) * 10 + d + e + k) % 100 == l * 11) then
+        ((0..9).to_a - [k, e, d, l, t, a]).permutation(4){|i, r, s, w|
+          if ((r != 0) && (w != 0) && (t != 0)) &&
+             ((s == w + 1) || (s == w + 2)) then
+             read = getTextNum([r,e,a,d])
+             write = getTextNum([w,r,i,t,e])
+             talk = getTextNum([t,a,l,k])
+             skill = getTextNum([s,k,i,l,l])
+             if read + write + talk == skill then
+               puts "#{read} + #{write} + #{talk} = #{skill}"
+               count += 1
+             end
+          end
+        }        
+      end
+    }
+    return count    
+  end
+
+  def isTarget?(value)
+    !!((value == 8) || (value == 9) || (value == 10))
+  end 
+
+  def getTextNum(arr)
+    ret = 0
+    length = arr.size - 1
+    arr.each_with_index do |item, index|
+      if index != length
+        item *= (10 ** (length - index))
+      end
+      ret += item
+    end
+    ret
+  end
+
 end
 
 Benchmark.bm do |x|
   x.report do
-    $answer = Q13.run_reg
+    $answer = Q13.run_03
   end
 end
 
