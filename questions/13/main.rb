@@ -1,5 +1,12 @@
 require 'benchmark'
 
+=begin
+質問控え
+@codepoints はハッシュの変数だから@がついてるのでしょうか？？
+LEFTの前に*がついているのは。。なぜでしょうか＞＜
+zipは配列の配列を串刺しで作るというのはわかりましたが、zip処理をしているところはなぜでしょうか＞＜
+=end
+
 module Q13
   module_function
 
@@ -66,17 +73,17 @@ module Q13
     # 最初lと1を間違えてしまっていたし。。。( TДT)
     (0..9).to_a.permutation(6){|e, a, d, t, k, l|
       # Rubyが重視しているのはDRYじゃないの？！DRYじゃない記載がっΣΣ(￣◇￣;)
-      if isTarget?(a + t) &&
-         isTarget?(a + e) &&
+      if is_target?(a + t) &&
+         is_target?(a + e) &&
          ((d + e + k) % 10 == l) &&
          (((a + t + l) * 10 + d + e + k) % 100 == l * 11) then
         ((0..9).to_a - [k, e, d, l, t, a]).permutation(4){|i, r, s, w|
           if ((r != 0) && (w != 0) && (t != 0)) &&
              ((s == w + 1) || (s == w + 2)) then
-             read = getTextNum([r,e,a,d])
-             write = getTextNum([w,r,i,t,e])
-             talk = getTextNum([t,a,l,k])
-             skill = getTextNum([s,k,i,l,l])
+             read = get_text_num([r,e,a,d])
+             write = get_text_num([w,r,i,t,e])
+             talk = get_text_num([t,a,l,k])
+             skill = get_text_num([s,k,i,l,l])
              if read + write + talk == skill then
                puts "#{read} + #{write} + #{talk} = #{skill}"
                count += 1
@@ -88,11 +95,11 @@ module Q13
     return count    
   end
 
-  def isTarget?(value)
-    !!((value == 8) || (value == 9) || (value == 10))
+  def is_target?(value)
+    ((value == 8) || (value == 9) || (value == 10))
   end 
 
-  def getTextNum(arr)
+  def get_text_num(arr)
     ret = 0
     length = arr.size - 1
     arr.each_with_index do |item, index|
