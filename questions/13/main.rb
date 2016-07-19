@@ -28,20 +28,29 @@ module Q13
     # 正規表現で文字列で分割しちゃう
     nums = expression.split(/[^a-zA-Z]/)
     
-    # 
+    # なんで空文字でsplitしてるんだろう？文字単位にしたいってことかな？？
     chars = nums.join().split("").uniq
+
+    # 文字列で分割したやつの1桁目の配列を取得している
     head = nums.map{|num| num[0]}
 
     count = 0
-    (0..9).to_a.permutation(char.size){|seq|
+
+    # 0から9の配列の順列を取得してる。
+    (0..9).to_a.permutation(chars.size){|seq|
+      # 0が最初であるかどうかのフラグを持っている？？
       is_zero_first = false
+
+      # 順列の組み合わせで0を含んでいる場合
       if seq.include?(0) then
+        # ここでやっていることがいまいちわからない。。
         is_zero_first = head.include?(chars[seq.index(0)])
       end
+
       if !is_zero_first then
-        # trって？？
-        # 並べた順番で置き換える。一番最初の文字のユニークな組み合わせで並べたもの
+        # trは並べた順番で置き換える。一番最初の文字のユニークな組み合わせで並べたもの
         e = expression.tr(chars.join(), seq.join())
+        # ここでやっていることがいまいちわからない。。
         if eval(e) then
           puts e
           count += 1
