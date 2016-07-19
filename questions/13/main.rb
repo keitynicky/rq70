@@ -62,7 +62,10 @@ module Q13
 
   def run_03
     count = 0
+    # ちょっとこのループはいただけない！“(*｀ε´*)ノ彡☆ﾊﾞﾝﾊﾞﾝ!!
+    # 最初lと1を間違えてしまっていたし。。。( TДT)
     (0..9).to_a.permutation(6){|e, a, d, t, k, l|
+      # Rubyが重視しているのはDRYじゃないの？！DRYじゃない記載がっΣΣ(￣◇￣;)
       if isTarget?(a + t) &&
          isTarget?(a + e) &&
          ((d + e + k) % 10 == l) &&
