@@ -28,11 +28,7 @@ module Q13
     # 正規表現で文字列で分割しちゃう
     nums = expression.split(/[^a-zA-Z]/)
     
-<<<<<<< HEAD
     # なんで空文字でsplitしてるんだろう？文字単位にしたいってことかな？？
-=======
-    # 
->>>>>>> origin/master
     chars = nums.join().split("").uniq
 
     # 文字列で分割したやつの1桁目の配列を取得している
