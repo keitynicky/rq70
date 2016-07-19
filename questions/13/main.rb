@@ -23,8 +23,13 @@ module Q13
   end
 
   def run_reg
+    # 対象となる文字列を保持
     expression = "READ+WRITE+TALK==SKILL"
+    
+    # 正規表現で文字列で分割しちゃう
     nums = expression.split(/[^a-zA-Z]/)
+    
+    # 
     chars = nums.join().split("").uniq
     head = nums.map{|num| num[0]}
 
