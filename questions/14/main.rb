@@ -41,6 +41,7 @@ module Q14
   @is_used = Array.new(@country.size, false)
   @max_depth = 0
 
+  # 使用済みにフラグをセットする場合
   def run
     @country.each_with_index{|c, i|
       @is_used[i] = true
@@ -67,6 +68,7 @@ module Q14
     @max_depth = [@max_depth, depth].max if is_last 
   end
 
+  # 使用済みを削除してゆく場合
   def run2
     @country.each{|c|
       search2(@country - [c], c, 1)
