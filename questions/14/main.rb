@@ -39,9 +39,9 @@ module Q14
     "USA"]
   
   @is_used = Array.new(@country.size, false)
+  @max_depth = 0
 
   def run
-    @max_depth = 0
     @country.each_with_index{|c, i|
       @is_used[i] = true
       search(c, 1)
@@ -67,6 +67,23 @@ module Q14
     @max_depth = [@max_depth, depth].max if is_last 
   end
 
+  def run2
+    @country.each{|c|
+      search2(@country - [c], c, 1)
+    }
+    @max_depth
+  end
+
+  def search2(countries, prev, depth)
+    next_country = countries.select{|c| c[0] == prev[-1].upcase}
+    if next_country.size > 0 then
+      next_country.each{|c|
+        search2(countries - [c], c, depth + 1)
+      }
+    else
+      @max_depth = [@max_depth, depth].max
+    end
+  end
 end
 
 Benchmark.bm do |x|
