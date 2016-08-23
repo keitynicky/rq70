@@ -5,13 +5,13 @@ module Q14
 
   @country = [
     "Australia",
+    "Cote dlvoire",
     "Iran",
     "Japan",
-    "South Korea",
+    "Korea Republic",
     "Algeria",
     "Cameroon",
     "Ghana",
-    "Ivory Coast",
     "Nigeria",
     "Costa Rica",
     "Honduras",
@@ -45,7 +45,7 @@ module Q14
     @country.each_with_index{|c, i|
       @is_used[i] = true
       search(c, 1)
-      @is_used[i] = false      
+      @is_used[i] = false 
     }
 
     @max_depth
@@ -54,6 +54,7 @@ module Q14
   def search(prev, depth)
     is_last = true
     @country.each_with_index{|c, i|
+      # しりとりチェック
       if c[0] == prev[-1].upcase then
         if !@is_used[i] then
           is_last = false
@@ -65,6 +66,7 @@ module Q14
     }   
     @max_depth = [@max_depth, depth].max if is_last 
   end
+
 end
 
 Benchmark.bm do |x|
