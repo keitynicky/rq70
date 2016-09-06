@@ -90,7 +90,7 @@ end
 
 Benchmark.bm do |x|
   x.report do
-    $answer = Q14.run2
+    $answer = Q14.run
   end
 end
 
