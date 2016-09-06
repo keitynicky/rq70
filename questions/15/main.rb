@@ -2,7 +2,7 @@ require 'benchmark'
 
 module Q15
   module_function
-  N = 100
+  N = 10
   STEPS = 4
   @memo = {}
 
@@ -14,10 +14,14 @@ module Q15
   def move(a, b)
     return 0 if a > b
     return 1 if a == b
+    get_count {|da, db| move(a + da, b - db)}
+  end
+
+  def get_count
     count = 0
     (1..STEPS).each{|da|
       (1..STEPS).each{|db|
-        count += move(a + da, b - db)
+        count += yield da, db
       }
     }
     count
@@ -32,13 +36,7 @@ module Q15
     return @memo[[a,b]] if @memo.has_key?([a, b])
     return @memo[[a,b]] = 0 if a > b
     return @memo[[a,b]] = 1 if a == b
-    count = 0
-    (1..STEPS).each{|da|
-      (1..STEPS).each{|db|
-        count += move2(a + da, b - db)
-      }
-    }
-    @memo[[a,b]] = count
+    @memo[[a,b]] = get_count {|da, db| move2(a + da, b - db)}
   end
 end
 
