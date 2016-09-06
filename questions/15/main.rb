@@ -2,7 +2,7 @@ require 'benchmark'
 
 module Q15
   module_function
-  N = 10
+  N = 100
   STEPS = 4
   @memo = {}
 
@@ -44,7 +44,7 @@ end
 
 Benchmark.bm do |x|
   x.report do
-    $answer = Q15.run2
+    $answer = Q15.run
   end
 end
 
