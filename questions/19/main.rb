@@ -8,7 +8,7 @@ module Q19
 
   TARGET_COUNT = 6
   SQUARE = 2
-  PEAR = 2
+  PAIR = 2
 
   # 写経！
   def run
@@ -20,7 +20,7 @@ module Q19
     # 対象となるデータの順列
     primes.permutation{|prime|
       # ２つの数の掛け算できる数の組み合わせで計算(ここはもう少しシンプルに書けないのかな？injectとか使って。。)
-      friends = prime.each_cons(PEAR).map{|x, y| x * y}
+      friends = prime.each_cons(PAIR).map{|x, y| x * y}
       # 先頭と末尾は同じ数の平方
       friends += [prime.first, prime.last].square!
       if min > friends.max 
