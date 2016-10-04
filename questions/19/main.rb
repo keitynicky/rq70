@@ -1,6 +1,7 @@
 require 'benchmark'
 require 'prime'
 require "pry"
+# require 'active_support/core_ext/module'　←　便利！要チェック！
 
 module Q19
   module_function
