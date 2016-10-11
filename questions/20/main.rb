@@ -18,6 +18,7 @@ module Q20
   end
 
   def largest_hash_key(hash)
+    # hash.to_a.max_by(&:last)　←　こちらのほうがわかりやすいかも☆
     hash.max_by{|k,v| v}
   end
 
