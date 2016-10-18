@@ -20,19 +20,23 @@ module Q21
   end
 
   def get_row_with_padding_zero before_row
-    [0, set_row_xor_values(before_row), 0].flatten
+    [0, get_xor_values(before_row), 0].flatten
   end
 
-  def set_row_xor_values before_row
+  def get_xor_values before_row
     xor_values = []
     if before_row.nil?
       xor_values.push(1)
     else
       before_row.each_cons(XOR_INPUT).each{|xor_pair|
-        xor_values.push(xor_pair.first ^ xor_pair.last)
+        xor_values.push(get_xor_value(xor_pair))
       }
     end
     xor_values
+  end
+
+  def get_xor_value xor_pair
+    xor_pair.first ^ xor_pair.last
   end
 
   def get_count_of_zero_with_trim row
