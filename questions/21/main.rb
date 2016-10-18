@@ -14,7 +14,7 @@ module Q21
     while count < LAST_COUNT
       row_index += 1
       xor_rows.push(get_row_with_padding_zero(xor_rows.last))
-      count += get_count_of_zero(xor_rows.last)
+      count += get_count_of_zero_with_trim(xor_rows.last)
     end
     row_index
   end
@@ -35,9 +35,8 @@ module Q21
     xor_values
   end
 
-  def get_count_of_zero row
-    trim_row = row[1..-2]
-    trim_row.count{|item| item == 0}
+  def get_count_of_zero_with_trim row
+    row[1..-2].count{|item| item == 0}
   end
 
 end
