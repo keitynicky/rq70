@@ -20,7 +20,7 @@ module Q21
   end
 
   def get_row_with_padding_zero before_row
-    [0, get_xor_values(before_row), 0].flatten
+    [0, *get_xor_values(before_row), 0]
   end
 
   def get_xor_values before_row
