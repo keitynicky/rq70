@@ -13,28 +13,26 @@ module Q21
     xor_rows = []
     while count < LAST_COUNT
       row_index += 1
-      xor_rows.push get_row_with_padding_zero xor_rows.last
-      count += get_count_of_zero xor_rows.last
+      xor_rows.push(get_row_with_padding_zero(xor_rows.last))
+      count += get_count_of_zero(xor_rows.last)
     end
     row_index
   end
 
   def get_row_with_padding_zero before_row
-    row = []
-    row.push 0
-    set_row_xor_values before_row, row
-    row.push 0
-    row      
+    [0, set_row_xor_values(before_row), 0].flatten
   end
 
-  def set_row_xor_values before_row, row
+  def set_row_xor_values before_row
+    xor_values = []
     if before_row.nil?
-      row.push 1
+      xor_values.push(1)
     else
       before_row.each_cons(XOR_INPUT).each{|xor_pair|
-        row.push xor_pair.first ^ xor_pair.last
+        xor_values.push(xor_pair.first ^ xor_pair.last)
       }
     end
+    xor_values
   end
 
   def get_count_of_zero row
