@@ -13,15 +13,21 @@ module Q21
     xor_rows = []
     while count < LAST_COUNT
       row_index += 1
-      xor_rows.push get_row(xor_rows.last)
-      count += xor_rows.last[1..-2].count{|item| item == 0}
+      xor_rows.push get_row_with_padding_zero xor_rows.last
+      count += get_count_of_zero xor_rows.last
     end
     row_index
   end
 
-  def get_row before_row
+  def get_row_with_padding_zero before_row
     row = []
     row.push 0
+    set_row_xor_values before_row, row
+    row.push 0
+    row      
+  end
+
+  def set_row_xor_values before_row, row
     if before_row.nil?
       row.push 1
     else
@@ -29,8 +35,11 @@ module Q21
         row.push xor_pair.first ^ xor_pair.last
       }
     end
-    row.push 0
-    row      
+  end
+
+  def get_count_of_zero row
+    trim_row = row[1..-2]
+    trim_row.count{|item| item == 0}
   end
 
 end
