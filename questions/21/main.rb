@@ -28,9 +28,7 @@ module Q21
     if before_row.nil?
       xor_values.push(1)
     else
-      before_row.each_cons(XOR_INPUT).each{|xor_pair|
-        xor_values.push(get_xor_value(xor_pair))
-      }
+      xor_values << before_row.each_cons(XOR_INPUT).to_a.map{|item| item.inject(:^)}
     end
     xor_values
   end
