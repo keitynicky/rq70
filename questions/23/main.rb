@@ -24,38 +24,6 @@ module Q23
 
   # 自力断念！
   # 再帰を使って、指定されたゲーム回数でどういったパターンがあるのかを取得して、その中から条件を満たすものを抽出しようとしたけれど、、無理でした！
-  # @list = []
-  # def run
-  #   list = [
-  #     [1, 2, 3, 4, 5],
-  #     [1, 2, 3, 4, 3],
-  #     [1, 2, 3, 2, 3],
-  #     [1, 2, 3, 2, 1],
-  #     [1, 2, 1, 2, 3],
-  #     [1, 2, 1, 2, 1],
-  #     [1, 2, 1, 0],
-  #     [1, 0]
-  #   ]
-
-  #   over_game_count list
-  #   binding.pry
-  # end
-
-  # def over_game_count list
-  #   list.select {|items| items.count >= GAME_COUNT}
-  # end
-
-  # def branch_items items
-  #   [-1, 1].each{ |i|
-  #     if items.last.zero? || @list.count == GAME_COUNT
-  #       @list.push items
-  #     else
-  #       items.push items.last + i
-  #       branch_items items
-  #     end
-  #   }
-  #   items
-  # end
 
 end
 
