@@ -13,7 +13,6 @@ module Q24
   def strike_out_count
     @memo = { [] => 1 }
     total_count(get_strike_outs + (1..9).each_cons(1).to_a)
-    # binding.pry
   end
 
   def total_count(strike_outs)
