@@ -16,12 +16,10 @@ module Q24
   end
 
   def total_count(strike_outs)
-    return @memo[strike_outs] if @memo.key?(strike_outs)
-    count = 0
-    strike_outs.each do |p|
-      count += total_count(strike_outs.select { |item| (item & p).empty? })
-    end
-    @memo[strike_outs] = count
+    @memo[strike_outs] ||=
+      count = strike_outs.inject(0) do |acc, p|
+        acc + total_count(strike_outs.select { |item| (item & p).empty? })
+      end
   end
 
   def get_strike_outs
