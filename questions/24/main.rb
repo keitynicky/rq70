@@ -11,9 +11,8 @@ module Q24
   end
 
   def strike_out_count
-    strike_outs = get_strike_outs + (1..9).each_cons(1).to_a
     @memo = { [] => 1 }
-    total_count(strike_outs)
+    total_count(get_strike_outs + (1..9).each_cons(1).to_a)
     # binding.pry
   end
 
@@ -21,8 +20,7 @@ module Q24
     return @memo[strike_outs] if @memo.key?(strike_outs)
     count = 0
     strike_outs.each do |p|
-      tmp = strike_outs.select { |item| (item & p).empty? }
-      count += total_count(tmp)
+      count += total_count(strike_outs.select { |item| (item & p).empty? })
     end
     @memo[strike_outs] = count
   end
