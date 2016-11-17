@@ -24,6 +24,9 @@ module Q25
     lines.push [[1, 0], [1, 1], [2, 1], [2, 2], [0, 2]]
   end
 
+  def hoge
+  end
+
   def cross_count(l)
     counts.push((l.size - l.count { |line| line.first < line.last }).abs)
   end
