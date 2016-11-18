@@ -42,8 +42,10 @@ module Q25
   end
 
   def moga
-    targets = [[0, 2], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]]
-    stocks = [[0, 0], [0, 1]]
+    # targets = [[0, 2], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]]
+    # stocks = [[0, 0], [0, 1]]
+    targets = [[1, 1], [1, 2], [2, 0], [2, 1], [2, 2]]
+    stocks = [[0, 0], [0, 1], [1, 0]]
     current = stocks.last
     X.new targets, stocks, current
   end
@@ -82,7 +84,7 @@ module Q25
     def candidates
       if current_is_same?
       else
-        next_targets.select { |item| item[current_index] == current.max}
+        targets.select { |item| item[current_index] == current.max}
       end
     end
 
