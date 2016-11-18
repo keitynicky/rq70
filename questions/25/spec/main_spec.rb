@@ -5,7 +5,7 @@ describe "Q25" do
   let(:extended_class) { Class.new { extend Q25 } }
   
   it "start_target" do
-    x = extended_class.start_target 1
+    x = extended_class.start_target 1    
     expect(x).to eq [[0, 1], [1, 0], [1, 1]]
   end
 
@@ -24,6 +24,35 @@ describe "Q25" do
         x = extended_class.cross_count [[0, 1], [1, 1], [1, 2], [2, 2], [2, 0]]
         expect(x).to eq [3]
       end
+
+      it "複数②" do
+        tmp = extended_class.start_target 2
+        x = extended_class.cross_count [*tmp, [0,0]]
+        expect(x).to eq [6]
+      end
+
+      it "複数②" do
+        tmp = extended_class.start_target 5
+        x = extended_class.cross_count [*tmp, [0,0]]
+        p x
+        expect(x).to eq [45]
+      end
+  end
+
+  describe "tie_shoes" do
+    # it "穴が3つ" do
+    #     tmp = extended_class.start_target 2
+    #     x = Stocker.new tmp, [tmp.first]        
+    #     extended_class.tie_shoes tmp, [tmp.first]
+    #     expect(extended_class.counts).to eq [6]
+    # end
+
+    # it "穴が6つ" do
+    #     tmp = extended_class.start_target 5
+    #     x = Stocker.new tmp, [tmp.first]        
+    #     extended_class.tie_shoes tmp, [tmp.first]
+    #     expect(extended_class.counts).to eq [45]
+    # end
   end
 
   describe "Stocker" do

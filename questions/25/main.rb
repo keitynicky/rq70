@@ -19,21 +19,21 @@ module Q25
   def max_cross_count
     targets = start_target HOLES
     stocks = targets.first
-    tie_ones_shoes targets.drop(1), [stocks]
+    tie_shoes targets.drop(1), [stocks]
     counts.max
   end
 
-  def start_target holes
+  def start_target(holes)
     (0..holes).to_a.repeated_permutation(2).drop(1)
   end
 
-  def tie_ones_shoes(targets, stocks)
+  def tie_shoes(targets, stocks)
     tmp = Stocker.new targets, stocks
     if tmp.completed?
       cross_count tmp.stocks
     else
       current = tmp.candidates.first
-      tie_ones_shoes(tmp.candidates, tmp.stocks.push(current))
+      tie_shoes(tmp.candidates.drop(1), tmp.stocks.push(current)) 
     end
   end
 
