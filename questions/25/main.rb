@@ -2,7 +2,7 @@ require 'benchmark'
 require 'pry'
 
 module Q25
-  module_function
+  # module_function
 
   # HOLES = 6
   HOLES = 2
@@ -17,10 +17,14 @@ module Q25
   end
 
   def max_cross_count
-    targets = (0..HOLES).to_a.repeated_permutation(2).drop(1)
+    targets = start_target HOLES
     stocks = targets.first
     tie_ones_shoes targets.drop(1), [stocks]
     counts.max
+  end
+
+  def start_target holes
+    (0..holes).to_a.repeated_permutation(2).drop(1)
   end
 
   def tie_ones_shoes(targets, stocks)
@@ -36,48 +40,48 @@ module Q25
   def cross_count(l)
     counts.push((l.size - l.count { |line| line.first < line.last }).abs)
   end
+end
 
-  class Stocker < Struct.new :targets, :stocks
-    def current
-      stocks.last
+class Stocker < Struct.new :targets, :stocks
+  def current
+    stocks.last
+  end
+
+  def completed?
+    candidates.empty?
+  end
+
+  def current_is_same?
+    current.first == current.last
+  end
+
+  def reject_index
+    is_min_index = false
+    if current_is_same?
+      is_min_index = stocks.any? { |item| item.first == current.uniq.first }
+    else
+      is_min_index = current.first < current.last
     end
+    is_min_index ? 0 : -1
+  end
 
-    def completed?
-      candidates.empty?
-    end
-
-    def current_is_same?
-      current.first == current.last
-    end
-
-    def reject_index
-      is_min_index = false
-      if current_is_same?
-        is_min_index = stocks.any? { |item| item.first == current.uniq.first }
-      else
-        is_min_index = current.first < current.last
-      end
-      is_min_index ? 0 : -1
-    end
-
-    def candidates
-      tmp = targets.reject { |item| item[reject_index] == current.min || item == current }
-      if tmp.one? && tmp.uniq.one?
-        []
-      else
-        tmp
-      end
+  def candidates
+    tmp = targets.reject { |item| item[reject_index] == current.min || item == current }
+    if tmp.one? && tmp.uniq.one?
+      []
+    else
+      tmp
     end
   end
 end
 
-Benchmark.bm do |x|
-  x.report do
-    $answer = Q25.run
-    $correct = 45
-  end
-end
+# Benchmark.bm do |x|
+#   x.report do
+#     $answer = Q25.run
+#     $correct = 45
+#   end
+# end
 
-puts
-puts "answer : #{$answer}"
-puts "correct : #{$correct}"
+# puts
+# puts "answer : #{$answer}"
+# puts "correct : #{$correct}"
