@@ -5,7 +5,7 @@ module Q25
   module_function
 
   # HOLES = 6
-  HOLES = 1
+  HOLES = 2
 
   def counts
     @counts ||= []
@@ -42,27 +42,10 @@ module Q25
   end
 
   def moga
-    # targets = [[0, 2], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]]
-    # stocks = [[0, 0], [0, 1]]
-    targets = [[1, 1], [1, 2], [2, 0], [2, 1], [2, 2]]
-    stocks = [[0, 0], [0, 1], [1, 0]]
+    targets = (0..HOLES).to_a.repeated_permutation(2).drop(2)
+    stocks = [[0, 0], [0, 1]]
     current = stocks.last
     X.new targets, stocks, current
-  end
-
-  def next_candidate targets, stocks, current
-    if current.first == current.last
-
-    else
-      min_is_first = current.first < current.last
-      targets.select do |item|
-        if min_is_first
-          item[-1] == current.last
-        else
-          item[0] == current.first
-        end
-      end
-    end
   end
 
   def cross_count(l)
@@ -74,25 +57,17 @@ module Q25
       current.first == current.last
     end
 
-    def current_index
+    def min_index
       if current_is_same?
       else
-        current.first < current.last ? -1 : 0
+        current.first < current.last ? 0 : -1
       end
     end
 
     def candidates
       if current_is_same?
       else
-        targets.select { |item| item[current_index] == current.max}
-      end
-    end
-
-    def next_targets
-      if current_is_same?
-
-      else
-        targets.reject { |item| item[0] == current.min || item == current}
+        targets.reject { |item| item[min_index] == current.min || item == current}
       end
     end
   end
