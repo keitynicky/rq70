@@ -11,10 +11,22 @@ describe "Q25" do
 
   describe "cross_count" do
       it "複数②" do
-        tmp = extended_class.start_target 5
+        tmp = extended_class.start_target 1
         x = extended_class.cross_count [*tmp, [0,0]]
-        expect(x).to eq [45]
+        expect(x).to eq 1
       end
+
+      it "複数②" do
+        tmp = extended_class.start_target 2
+        x = extended_class.cross_count [*tmp, [0,0]]
+        expect(extended_class.memo.uniq).to eq 6
+      end
+
+    #   it "複数②" do
+    #     tmp = extended_class.start_target 5
+    #     x = extended_class.cross_count [*tmp, [0,0]]
+    #     expect(x).to eq [45]
+    #   end
   end
 
   describe "Counter" do
