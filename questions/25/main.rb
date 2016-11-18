@@ -12,8 +12,8 @@ module Q25
   end
 
   def run
-    # binding.pry
-    max_cross_count
+    binding.pry
+    # max_cross_count
   end
 
   def max_cross_count
@@ -37,9 +37,49 @@ module Q25
     end
   end
 
-  def cross_count(l)
-    counts.push((l.size - l.count { |line| line.first < line.last }).abs)
+  def memo
+    @memo ||= []
   end
+
+  def cross_count(l)
+    l.each do |item|
+      x = Counter.new item
+      tmp = l.drop(1)
+      unless x.except?
+        tmp.each do |input|
+          if x.crossing? input
+            memo.push x.cross_pair
+          end 
+        end
+      end
+    end
+    memo.uniq.count
+  end
+end
+
+class Counter < Struct.new :item
+
+  def min_index
+    item.min == item.first ? 0 : -1
+  end
+
+  def max_index
+    item.max == item.first ? 0 : -1
+  end
+
+  def except?
+    item.uniq.one?
+  end
+
+  def crossing? _input
+    @input = _input
+    _input[min_index] > item.min && _input[max_index] < item.max
+  end
+
+  def cross_pair
+    [item, @input].sort
+  end
+
 end
 
 class Stocker < Struct.new :targets, :stocks
