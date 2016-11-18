@@ -13,23 +13,23 @@ module Q25
 
   def run
     # binding.pry
-    moga
+    max_cross_count
   end
 
-  def moga
+  def max_cross_count
     targets = (0..HOLES).to_a.repeated_permutation(2).drop(1)
     stocks = targets.first
-    fuga targets.drop(1), [stocks]
+    tie_ones_shoes targets.drop(1), [stocks]
     counts.max
   end
 
-  def fuga(targets, stocks)
-    y = X.new targets, stocks
-    if y.completed?
-      cross_count y.stocks
+  def tie_ones_shoes(targets, stocks)
+    tmp = Stocker.new targets, stocks
+    if tmp.completed?
+      cross_count tmp.stocks
     else
-      current = y.candidates.first
-      fuga(y.candidates.drop(1), y.stocks.push(current))
+      current = tmp.candidates.first
+      tie_ones_shoes(tmp.candidates.drop(1), tmp.stocks.push(current))
     end
   end
 
@@ -37,10 +37,7 @@ module Q25
     counts.push((l.size - l.count { |line| line.first < line.last }).abs)
   end
 
-  def get_lines(lines)
-  end
-
-  class X < Struct.new :targets, :stocks
+  class Stocker < Struct.new :targets, :stocks
     def current
       stocks.last
     end
