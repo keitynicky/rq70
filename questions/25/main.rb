@@ -11,67 +11,67 @@ module Q25
     @counts ||= []
   end
 
-  def lines
-    @liens ||= []
-  end
-
   def run
-    binding.pry
-    
-    # lines_combination.each do |lines|
-    #   cross_count lines
-    # end
-    # counts.max
-  end
-
-  def lines_combination
-    hoge (0..HOLES).to_a.repeated_permutation(2).drop(1)
-    # lines = []
-    # lines.push [[0, 1], [1, 0], [1, 2], [2, 1]]
-    # lines.push [[1, 0], [1, 1], [2, 1], [2, 2], [0, 2]]
-  end
-
-  def hoge _tmp
-    _tmp.each do |item|
-      targets = _tmp.reject{|i| i == item}
-      nexts = targets.select{|i| i.last == item.first}
-      nexts.each do |n|
-
-      end
-    end
+    # binding.pry
+    moga
   end
 
   def moga
-    targets = (0..HOLES).to_a.repeated_permutation(2).drop(2)
-    stocks = [[0, 0], [0, 1]]
-    current = stocks.last
-    X.new targets, stocks, current
+    targets = (0..HOLES).to_a.repeated_permutation(2).drop(1)
+    stocks = targets.first
+    fuga targets.drop(1), [stocks]
+    counts.max
+  end
+
+  def fuga(targets, stocks)
+    y = X.new targets, stocks
+    if y.completed?
+      cross_count y.stocks
+    else
+      current = y.candidates.first
+      fuga(y.candidates.drop(1), y.stocks.push(current))
+    end
   end
 
   def cross_count(l)
     counts.push((l.size - l.count { |line| line.first < line.last }).abs)
   end
 
-  class X < Struct.new :targets, :stocks, :current
+  def get_lines(lines)
+  end
+
+  class X < Struct.new :targets, :stocks
+    def current
+      stocks.last
+    end
+
+    def completed?
+      candidates.empty?
+    end
+
     def current_is_same?
       current.first == current.last
     end
 
-    def min_index
+    def reject_index
+      is_min_index = false
       if current_is_same?
+        is_min_index = stocks.any? { |item| item.first == current.uniq.first }
       else
-        current.first < current.last ? 0 : -1
+        is_min_index = current.first < current.last
       end
+      is_min_index ? 0 : -1
     end
 
     def candidates
-      if current_is_same?
+      tmp = targets.reject { |item| item[reject_index] == current.min || item == current }
+      if tmp.one? && tmp.uniq.one?
+        []
       else
-        targets.reject { |item| item[min_index] == current.min || item == current}
+        tmp
       end
     end
   end
-
 end
 
 Benchmark.bm do |x|
