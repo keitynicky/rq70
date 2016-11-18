@@ -63,6 +63,28 @@ describe "Q25" do
             x = Stocker.new tmp, [tmp.first]
             expect(x.candidates).to eq [[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]
         end
+
+        it "穴の数が3つで初回" do
+            tmp = extended_class.start_target 2
+            x = Stocker.new tmp, [tmp.first]
+            expect(x.candidates).to eq [[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]
+        end
+    end
+
+    describe "except" do
+        it "穴の数が3つで初回" do
+            tmp = extended_class.start_target 2
+            x = Stocker.new tmp, [tmp.first]
+            expect(x.except).to eq [[0,1],[0,2]]
+        end
+    end
+
+    describe "except_next" do
+        it "穴の数が3つで初回" do
+            tmp = extended_class.start_target 2
+            x = Stocker.new tmp, [tmp.first]
+            expect(x.except_next).to eq [[0,2]]
+        end
     end
   end
 

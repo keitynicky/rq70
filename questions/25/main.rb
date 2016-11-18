@@ -33,7 +33,7 @@ module Q25
       cross_count tmp.stocks
     else
       current = tmp.candidates.first
-      tie_ones_shoes(tmp.candidates.drop(1), tmp.stocks.push(current))
+      tie_ones_shoes(tmp.candidates, tmp.stocks.push(current))
     end
   end
 
@@ -66,12 +66,23 @@ class Stocker < Struct.new :targets, :stocks
   end
 
   def candidates
-    tmp = targets.reject { |item| item[reject_index] == current.min || item == current }
-    if tmp.one? && tmp.uniq.one?
+    if next_candidates.one? && next_candidates.uniq.one?
       []
     else
-      tmp
+      next_candidates
     end
+  end
+
+  def next_candidates
+    @nc ||= targets - except
+  end
+
+  def except
+    @except ||= targets.select { |item| item[reject_index] == current.min || item == current }
+  end
+
+  def except_next
+    except - [current]
   end
 end
 
