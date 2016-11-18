@@ -28,13 +28,6 @@ module Q25
   end
 
   def tie_shoes(targets, stocks)
-    tmp = Stocker.new targets, stocks
-    if tmp.completed?
-      cross_count tmp.stocks
-    else
-      current = tmp.candidates.first
-      tie_shoes(tmp.candidates.drop(1), tmp.stocks.push(current)) 
-    end
   end
 
   def memo
@@ -80,50 +73,6 @@ class Counter < Struct.new :item
     [item, @input].sort
   end
 
-end
-
-class Stocker < Struct.new :targets, :stocks
-  def current
-    stocks.last
-  end
-
-  def completed?
-    candidates.empty?
-  end
-
-  def current_is_same?
-    current.first == current.last
-  end
-
-  def reject_index
-    is_min_index = false
-    if current_is_same?
-      is_min_index = stocks.any? { |item| item.first == current.uniq.first }
-    else
-      is_min_index = current.first < current.last
-    end
-    is_min_index ? 0 : -1
-  end
-
-  def candidates
-    if next_candidates.one? && next_candidates.uniq.one?
-      []
-    else
-      next_candidates
-    end
-  end
-
-  def next_candidates
-    @nc ||= targets - except
-  end
-
-  def except
-    @except ||= targets.select { |item| item[reject_index] == current.min || item == current }
-  end
-
-  def except_next
-    except - [current]
-  end
 end
 
 # Benchmark.bm do |x|
