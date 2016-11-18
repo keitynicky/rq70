@@ -9,6 +9,23 @@ describe "Q25" do
     expect(x).to eq [[0, 1], [1, 0], [1, 1]]
   end
 
+  describe "cross_count" do
+      it "基本" do
+        x = extended_class.cross_count [[0, 1], [1, 0]]
+        expect(x).to eq [1]
+      end
+
+      it "複数" do
+        x = extended_class.cross_count [[0, 1], [1, 0], [1, 2], [2, 1]]
+        expect(x).to eq [2]
+      end
+
+      it "複数②" do
+        x = extended_class.cross_count [[0, 1], [1, 1], [1, 2], [2, 2], [2, 0]]
+        expect(x).to eq [3]
+      end
+  end
+
   describe "Stocker" do
     it "current" do
         tmp = extended_class.start_target 1
