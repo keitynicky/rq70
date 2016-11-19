@@ -5,121 +5,50 @@ module Q25
   module_function
 
   # HOLES = 6
-  HOLES = 2
+  HOLES = 3
 
   def counts
     @counts ||= []
   end
 
   def run
-    binding.pry
-    # max_cross_count
-  end
-
-  def max_cross_count
-    targets = start_target HOLES
-    stocks = targets.first
-    counts.max
-  end
-
-  def start_target(holes)
-    (0..holes).to_a.repeated_permutation(2).drop(1)
-  end
-
-  def memo
-    @memo ||= []
+    test
   end
 
   def test
-      x = [0,1,2].repeated_permutation(2).to_a.drop(1)
-      start_ls = x.select {|item| item.first.zero?}
-      end_rs = x.select {|item| item.last.zero?}
-      candidates = x - (start_ls + end_rs)
-      start_ls.each do |item|
-        test2 item, candidates, [], -1
+    count = 0
+    h = (1..HOLES - 1).to_a.permutation(HOLES - 1).to_a
+    h.product(h) do |set|
+      keep = set.transpose.flatten
+      xx = [[0, keep.first]]
+      keep.each_index do |i|
+        xx << [keep[i], (i + 1) == keep.size ? 0 : keep[i + 1]]
       end
-      binding.pry      
-  end
-
-  def test2 current, candidates, x, index
-    if candidates.empty?
-      memo << x
-    else
-      next_c = candidates - [current]
-      cand = next_c.select{ |item| item[index] == current[index] }
-      cand.each do |y|
-        x << y
-        test2 y, next_c, x, index == 0 ? -1 : 0
+      tmp = cross_count xx
+      if tmp > count
+        count = tmp
       end
     end
-  end
-
-  def hoge
-    tmp = []
-    tmp << [0].product([1,2]).first
-    tmp << [1,2].product([1]).first
-    tmp << [1].product([2]).first
-    tmp << [2].product([2]).first
-    tmp << [2].product([0]).first
-  end
-
-  def fuga
-    tmp = []
-    tmp << [0].product([1,2]).last
-    tmp << [1,2].product([2]).first
-    tmp << [1].product([1]).first
-    tmp << [2].product([1]).first
-    tmp << [2].product([0]).first
-  end
-
-  def moga
-    tmp = []
-    tmp << [0].product([1,2]).first
-    tmp << [1,2].product([1]).last
-    tmp << [2].product([2]).first
-    tmp << [1].product([2]).first
-    tmp << [1].product([0]).first
+    count
   end
 
   def cross_count(l)
-    l.each do |item|
-      x = Counter.new item
-      tmp = l.drop(1)
-      unless x.except?
-        tmp.each do |input|
-          if x.crossing? input
-            memo.push x.cross_pair
-          end 
+    tmp = {}
+    l.each do |i|
+      hoge = (l - [i]).select do |x|
+        if x.uniq.size == 1
+          x.min > i.min && x.max < i.max
+        else
+          x.min >= i.min && x.max <= i.max
         end
       end
+      if hoge.any?
+        key = [i, *hoge].sort
+        tmp[key] ||= hoge.count
+      end
     end
-    memo.uniq.count
+    tmp.values.inject(:+)
   end
-end
-
-class Counter < Struct.new :item
-
-  def min_index
-    item.min == item.first ? 0 : -1
-  end
-
-  def max_index
-    item.max == item.first ? 0 : -1
-  end
-
-  def except?
-    item.uniq.one?
-  end
-
-  def crossing? _input
-    @input = _input
-    _input[min_index] > item.min && _input[max_index] < item.max
-  end
-
-  def cross_pair
-    [item, @input].sort
-  end
-
 end
 
 Benchmark.bm do |x|
