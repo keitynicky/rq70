@@ -2,7 +2,7 @@ require 'benchmark'
 require 'pry'
 
 module Q25
-  # module_function
+  module_function
 
   # HOLES = 6
   HOLES = 2
@@ -19,7 +19,6 @@ module Q25
   def max_cross_count
     targets = start_target HOLES
     stocks = targets.first
-    tie_shoes targets.drop(1), [stocks]
     counts.max
   end
 
@@ -27,11 +26,59 @@ module Q25
     (0..holes).to_a.repeated_permutation(2).drop(1)
   end
 
-  def tie_shoes(targets, stocks)
-  end
-
   def memo
     @memo ||= []
+  end
+
+  def test
+      x = [0,1,2].repeated_permutation(2).to_a.drop(1)
+      start_ls = x.select {|item| item.first.zero?}
+      end_rs = x.select {|item| item.last.zero?}
+      candidates = x - (start_ls + end_rs)
+      start_ls.each do |item|
+        test2 item, candidates, [], -1
+      end
+      binding.pry      
+  end
+
+  def test2 current, candidates, x, index
+    if candidates.empty?
+      memo << x
+    else
+      next_c = candidates - [current]
+      cand = next_c.select{ |item| item[index] == current[index] }
+      cand.each do |y|
+        x << y
+        test2 y, next_c, x, index == 0 ? -1 : 0
+      end
+    end
+  end
+
+  def hoge
+    tmp = []
+    tmp << [0].product([1,2]).first
+    tmp << [1,2].product([1]).first
+    tmp << [1].product([2]).first
+    tmp << [2].product([2]).first
+    tmp << [2].product([0]).first
+  end
+
+  def fuga
+    tmp = []
+    tmp << [0].product([1,2]).last
+    tmp << [1,2].product([2]).first
+    tmp << [1].product([1]).first
+    tmp << [2].product([1]).first
+    tmp << [2].product([0]).first
+  end
+
+  def moga
+    tmp = []
+    tmp << [0].product([1,2]).first
+    tmp << [1,2].product([1]).last
+    tmp << [2].product([2]).first
+    tmp << [1].product([2]).first
+    tmp << [1].product([0]).first
   end
 
   def cross_count(l)
@@ -75,13 +122,13 @@ class Counter < Struct.new :item
 
 end
 
-# Benchmark.bm do |x|
-#   x.report do
-#     $answer = Q25.run
-#     $correct = 45
-#   end
-# end
+Benchmark.bm do |x|
+  x.report do
+    $answer = Q25.run
+    $correct = 45
+  end
+end
 
-# puts
-# puts "answer : #{$answer}"
-# puts "correct : #{$correct}"
+puts
+puts "answer : #{$answer}"
+puts "correct : #{$correct}"
