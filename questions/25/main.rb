@@ -4,14 +4,15 @@ require 'pry'
 module Q25
   module_function
 
-  # HOLES = 6
-  HOLES = 3
+  HOLES = 6
+  # HOLES = 3
 
   def counts
     @counts ||= []
   end
 
   def run
+    # binding.pry
     test
   end
 
@@ -22,7 +23,11 @@ module Q25
       keep = set.transpose.flatten
       xx = [[0, keep.first]]
       keep.each_index do |i|
-        xx << [keep[i], (i + 1) == keep.size ? 0 : keep[i + 1]]
+        tmp = [keep[i], (i + 1) == keep.size ? 0 : keep[i + 1]]
+        if i.even?
+          tmp = tmp.reverse
+        end
+        xx << tmp
       end
       tmp = cross_count xx
       if tmp > count
@@ -39,12 +44,16 @@ module Q25
         if x.uniq.size == 1
           x.min > i.min && x.max < i.max
         else
-          x.min >= i.min && x.max <= i.max
+          if i.first > i.last
+            x.first < i.first && x.last > i.last
+          else
+            x.first > i.first && x.last < i.last
+          end
         end
       end
-      if hoge.any?
-        key = [i, *hoge].sort
-        tmp[key] ||= hoge.count
+      hoge.each do |h|
+        key = [i, h].sort
+        tmp[key] ||= 1
       end
     end
     tmp.values.inject(:+)
