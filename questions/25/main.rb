@@ -15,9 +15,7 @@ module Q25
       keep = set.transpose.flatten
       xx = [[0, keep.first]]
       keep.each_index do |i|
-        tmp = [keep[i], (i + 1) == keep.size ? 0 : keep[i + 1]]
-        tmp = tmp.reverse if i.even?
-        xx << tmp
+        xx << [keep[i], (i + 1) == keep.size ? 0 : keep[i + 1]]
       end
       tmp = cross_count xx
       count = tmp if tmp > count
