@@ -2,10 +2,10 @@ require 'benchmark'
 require 'pry'
 
 module Q25
-  module_function
+  # module_function
 
-  HOLES = 6
-  # HOLES = 3
+  # HOLES = 6
+  HOLES = 3
 
   def run
     # binding.pry
@@ -27,11 +27,13 @@ module Q25
   end
 
   def get_shoelace(candidates)
+    p candidates
     shoelace = [[0, candidates.first]]
     candidates.each_index do |i|
       shoelace << [candidates[i], (i + 1) == candidates.size ? 0 : candidates[i + 1]]
       shoelace[-1] = shoelace.last.reverse if i.even?
     end
+    p shoelace
     shoelace
   end
 
@@ -51,13 +53,13 @@ module Q25
   end
 end
 
-Benchmark.bm do |x|
-  x.report do
-    $answer = Q25.run
-    $correct = 45
-  end
-end
+# Benchmark.bm do |x|
+#   x.report do
+#     $answer = Q25.run
+#     $correct = 45
+#   end
+# end
 
-puts
-puts "answer : #{$answer}"
-puts "correct : #{$correct}"
+# puts
+# puts "answer : #{$answer}"
+# puts "correct : #{$correct}"
