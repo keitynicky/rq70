@@ -19,14 +19,14 @@ module Q25
   def answer(permutation)
     ans = [0, []]
     permutation.product(permutation) do |set|
-      shoelace = hoge set.transpose.flatten
+      shoelace = get_shoelace set.transpose.flatten
       c = cross_count shoelace
       ans = [c, shoelace] if c > ans.first
     end
     ans
   end
 
-  def hoge(candidates)
+  def get_shoelace(candidates)
     shoelace = [[0, candidates.first]]
     candidates.each_index do |i|
       shoelace << [candidates[i], (i + 1) == candidates.size ? 0 : candidates[i + 1]]
