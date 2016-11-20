@@ -22,8 +22,9 @@ module Q25
   def answer(candidates)
     ans = [0, []]
     candidates.product(candidates) do |set|
-      c = cross_count shoelace set.transpose.flatten
-      ans = c if c.first > ans.first
+      targets = shoelace set.transpose.flatten
+      c = cross_count targets
+      ans = [c, targets] if c > ans.first
     end
     ans
   end
@@ -36,9 +37,9 @@ module Q25
   end
 
   def cross_count(l)
-    [l.combination(EACH_LINE).count do |item|
+    l.combination(EACH_LINE).count do |item|
       crossing? item.first, item.last
-    end, l]
+    end
   end
 
   def crossing?(line1, line2)
