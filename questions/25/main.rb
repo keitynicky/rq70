@@ -26,7 +26,7 @@ module Q25
     ans
   end
 
-  def hoge candidates
+  def hoge(candidates)
     shoelace = [[0, candidates.first]]
     candidates.each_index do |i|
       shoelace << [candidates[i], (i + 1) == candidates.size ? 0 : candidates[i + 1]]
