@@ -6,8 +6,6 @@ module Q25
 
   HOLES = 6
   # HOLES = 3
-  LEFT_X = 0
-  RIGHT_X = 1
   EACH_LINE = 2
 
   def run
@@ -43,9 +41,7 @@ module Q25
   end
 
   def crossing?(line1, line2)
-    l1_y1, l1_y2 = line1
-    l2_y1, l2_y2 = line2
-    (l1_y1 - l2_y1) * (l1_y2 - l2_y2) < 0
+    (line1.first - line2.first) * (line1.last - line2.last) < 0
   end
 end
 
