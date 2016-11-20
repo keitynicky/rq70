@@ -9,9 +9,16 @@ module Q25
 
   def run
     # binding.pry
+    answer candidates HOLES
+  end
+
+  def candidates holes
+    (1..holes - 1).to_a.permutation(holes - 1).to_a
+  end
+
+  def answer permutation
     ans = [0, []]
-    h = (1..HOLES - 1).to_a.permutation(HOLES - 1).to_a
-    h.product(h) do |set|
+    permutation.product(permutation) do |set|
       candidates = set.transpose.flatten
       shoelace = [[0, candidates.first]]
       candidates.each_index do |i|
