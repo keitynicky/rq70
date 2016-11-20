@@ -6,6 +6,9 @@ module Q25
 
   # HOLES = 6
   HOLES = 3
+  LEFT_X = 0
+  RIGHT_X = 1
+  EACH_LINE = 2
 
   def run
     # binding.pry
@@ -33,18 +36,17 @@ module Q25
   end
 
   def cross_count(l)
-    [l.combination(2).count do |item|
+    [l.combination(EACH_LINE).count do |item|
       crossing? item.first, item.last
     end, l]
   end
 
   def crossing?(line1, line2)
-    line1_y1, line1_y2 = line1
-    line2_y1, line2_y2 = line2
-    x1 = 0
-    x2 = 1
-    ((x1 - x2) * (line2_y1 - line1_y1) + (line1_y1 - line1_y2) * (x1 - x1)) * ((x1 - x2) * (line2_y2 - line1_y1) + (line1_y1 - line1_y2) * (x1 - x2)) < 0 &&
-      ((x1 - x2) * (line1_y1 - line2_y1) + (line2_y1 - line2_y2) * (x1 - x1)) * ((x1 - x2) * (line1_y2 - line2_y1) + (line2_y1 - line2_y2) * (x1 - x2)) < 0
+    l1_y1, l1_y2 = line1
+    l2_y1, l2_y2 = line2
+    x = LEFT_X - RIGHT_X
+    (x * (l2_y1 - l1_y1)) * (x * (l2_y2 - l1_y1) + (l1_y1 - l1_y2) * x) < 0 &&
+      (x * (l1_y1 - l2_y1)) * (x * (l1_y2 - l2_y1) + (l2_y1 - l2_y2) * x) < 0
   end
 end
 

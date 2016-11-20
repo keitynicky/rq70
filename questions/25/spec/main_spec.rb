@@ -5,10 +5,10 @@ describe "Q25" do
   let(:extended_class) { Class.new { extend Q25 } }
   
   describe "answer" do
-    # it "例題の個数" do
-    #     x = extended_class.answer extended_class.candidates 6
-    #     expect(x.first).to eq 45
-    # end
+    it "例題の個数" do
+        x = extended_class.answer extended_class.candidates 6
+        expect(x.first).to eq 45
+    end
 
     it "例題の個数の半分" do
         x = extended_class.answer extended_class.candidates 3
