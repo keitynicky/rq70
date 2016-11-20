@@ -40,21 +40,25 @@ module Q25
   def cross_count(l)
     count = 0
     l.combination(2) do |item|
-      count += 1 if crossing? 0, item.first.first, 1, item.first.last, 0, item.last.first, 1, item.last.last
-      # count += 1 if Line.new(item.first).crossing?(Line.new(item.last))
+      count += 1 if crossing? item.first, item.last
     end
     count
   end
-end
 
-def crossing?(line1_ax, line1_ay, line1_bx, line1_by, line2_ax, line2_ay, line2_bx, line2_by)
-	if ((line1_ax - line1_bx) * (line2_ay - line1_ay) + (line1_ay - line1_by) * (line1_ax - line2_ax)) * ((line1_ax - line1_bx) * (line2_by - line1_ay) + (line1_ay - line1_by) * (line1_ax - line2_bx)) < 0
-		if ((line2_ax - line2_bx) * (line1_ay - line2_ay) + (line2_ay - line2_by) * (line2_ax - line1_ax)) * ((line2_ax - line2_bx) * (line1_by - line2_ay) + (line2_ay - line2_by) * (line2_ax - line1_bx)) < 0
-			true
-		end
-	else
-		false
-	end
+  def crossing?(line1, line2)
+    line1_ay, line1_by = line1
+    line2_ay, line2_by = line2
+    line1_ax = line2_ax = 0
+    line1_bx = line2_bx = 1
+    if ((line1_ax - line1_bx) * (line2_ay - line1_ay) + (line1_ay - line1_by) * (line1_ax - line2_ax)) * ((line1_ax - line1_bx) * (line2_by - line1_ay) + (line1_ay - line1_by) * (line1_ax - line2_bx)) < 0
+      if ((line2_ax - line2_bx) * (line1_ay - line2_ay) + (line2_ay - line2_by) * (line2_ax - line1_ax)) * ((line2_ax - line2_bx) * (line1_by - line2_ay) + (line2_ay - line2_by) * (line2_ax - line1_bx)) < 0
+        true
+      end
+    else
+      false
+    end
+  end
+
 end
 
 class Line < Struct.new :input
