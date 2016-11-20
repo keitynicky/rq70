@@ -35,8 +35,8 @@ module Q25
   end
 
   def cross_count(l)
-    l.combination(EACH_LINE).count do |item|
-      crossing? item.first, item.last
+    l.combination(EACH_LINE).count do |lines|
+      crossing? lines.first, lines.last
     end
   end
 
