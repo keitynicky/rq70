@@ -46,48 +46,14 @@ module Q25
   end
 
   def crossing?(line1, line2)
-    line1_ay, line1_by = line1
-    line2_ay, line2_by = line2
-    line1_ax = line2_ax = 0
-    line1_bx = line2_bx = 1
-    if ((line1_ax - line1_bx) * (line2_ay - line1_ay) + (line1_ay - line1_by) * (line1_ax - line2_ax)) * ((line1_ax - line1_bx) * (line2_by - line1_ay) + (line1_ay - line1_by) * (line1_ax - line2_bx)) < 0
-      if ((line2_ax - line2_bx) * (line1_ay - line2_ay) + (line2_ay - line2_by) * (line2_ax - line1_ax)) * ((line2_ax - line2_bx) * (line1_by - line2_ay) + (line2_ay - line2_by) * (line2_ax - line1_bx)) < 0
-        true
-      end
-    else
-      false
-    end
+    line1_y1, line1_y2 = line1
+    line2_y1, line2_y2 = line2
+    x1 = 0
+    x2 = 1
+    ((x1 - x2) * (line2_y1 - line1_y1) + (line1_y1 - line1_y2) * (x1 - x1)) * ((x1 - x2) * (line2_y2 - line1_y1) + (line1_y1 - line1_y2) * (x1 - x2)) < 0 && 
+    ((x1 - x2) * (line1_y1 - line2_y1) + (line2_y1 - line2_y2) * (x1 - x1)) * ((x1 - x2) * (line1_y2 - line2_y1) + (line2_y1 - line2_y2) * (x1 - x2)) < 0
   end
 
-end
-
-class Line < Struct.new :input
-
-  def x1
-    0    
-  end
-
-  def y1
-    input.first
-  end
-
-  def x2
-    1    
-  end
-
-  def y2
-    input.last
-  end
-
-  def crossing? line
-    if ((self.x1 - self.x2) * (line.y1 - self.y1) + (self.y1 - self.y2) * (self.x1 - line.x1)) * ((self.x1 - self.x2) * (line.y2 - self.y1) + (self.y1 - self.y2) * (self.x1 - line.x2)) < 0
-      if ((line.x1 - line.x2) * (self.y1 - line.y1) + (line.y1 - line.y2) * (line.x1 - self.x1)) * ((line.x1 - line.x2) * (self.y2 - line.y1) + (line.y1 - line.y2) * (line.x1 - self.x2)) < 0
-        true
-      end
-    else
-      false
-    end
-  end
 end
 
 Benchmark.bm do |x|
