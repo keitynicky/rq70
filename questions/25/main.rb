@@ -16,37 +16,26 @@ module Q25
     (1..holes - 1).to_a.permutation(holes - 1).to_a
   end
 
-  def answer(permutation)
+  def answer(candidates)
     ans = [0, []]
-    permutation.product(permutation) do |set|
-      shoelace = get_shoelace set.transpose.flatten
-      c = cross_count shoelace
-      ans = [c, shoelace] if c > ans.first
+    candidates.product(candidates) do |set|
+      c = cross_count shoelace set.transpose.flatten
+      ans = c if c.first > ans.first
     end
     ans
   end
 
-  def get_shoelace(candidates)
+  def shoelace(candidates)
     [[0, candidates.first]] + candidates.each_with_index.map do |_n, i|
       tmp = [candidates[i], (i + 1) == candidates.size ? 0 : candidates[i + 1]]
-      tmp = tmp.reverse if i.even?
-      tmp
+      i.even? ? tmp.reverse : tmp
     end
   end
 
-  # def get_shoelace(candidates)
-  #   shoelace = [[0, candidates.first]]
-  #   candidates.each_index do |i|
-  #     shoelace << [candidates[i], (i + 1) == candidates.size ? 0 : candidates[i + 1]]
-  #     shoelace[-1] = shoelace.last.reverse if i.even?
-  #   end
-  #   shoelace
-  # end
-
   def cross_count(l)
-    l.combination(2).count do |item|
+    [l.combination(2).count do |item|
       crossing? item.first, item.last
-    end
+    end, l]
   end
 
   def crossing?(line1, line2)
