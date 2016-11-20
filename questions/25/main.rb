@@ -27,15 +27,21 @@ module Q25
   end
 
   def get_shoelace(candidates)
-    p candidates
-    shoelace = [[0, candidates.first]]
-    candidates.each_index do |i|
-      shoelace << [candidates[i], (i + 1) == candidates.size ? 0 : candidates[i + 1]]
-      shoelace[-1] = shoelace.last.reverse if i.even?
+    [[0, candidates.first]] + candidates.each_with_index.map do |_n, i|
+      tmp = [candidates[i], (i + 1) == candidates.size ? 0 : candidates[i + 1]]
+      tmp = tmp.reverse if i.even?
+      tmp
     end
-    p shoelace
-    shoelace
   end
+
+  # def get_shoelace(candidates)
+  #   shoelace = [[0, candidates.first]]
+  #   candidates.each_index do |i|
+  #     shoelace << [candidates[i], (i + 1) == candidates.size ? 0 : candidates[i + 1]]
+  #     shoelace[-1] = shoelace.last.reverse if i.even?
+  #   end
+  #   shoelace
+  # end
 
   def cross_count(l)
     l.combination(2).count do |item|
