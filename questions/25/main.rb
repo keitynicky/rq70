@@ -2,10 +2,10 @@ require 'benchmark'
 require 'pry'
 
 module Q25
-  # module_function
+  module_function
 
-  # HOLES = 6
-  HOLES = 3
+  HOLES = 6
+  # HOLES = 3
   LEFT_X = 0
   RIGHT_X = 1
   EACH_LINE = 2
@@ -50,13 +50,13 @@ module Q25
   end
 end
 
-# Benchmark.bm do |x|
-#   x.report do
-#     $answer = Q25.run
-#     $correct = 45
-#   end
-# end
+Benchmark.bm do |x|
+  x.report do
+    $answer = Q25.run
+    $correct = 45
+  end
+end
 
-# puts
-# puts "answer : #{$answer}"
-# puts "correct : #{$correct}"
+puts
+puts "answer : #{$answer}"
+puts "correct : #{$correct}"
