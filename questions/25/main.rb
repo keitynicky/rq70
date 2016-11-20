@@ -45,9 +45,7 @@ module Q25
   def crossing?(line1, line2)
     l1_y1, l1_y2 = line1
     l2_y1, l2_y2 = line2
-    x = LEFT_X - RIGHT_X
-    (x * (l2_y1 - l1_y1)) * (x * (l2_y2 - l1_y1) + (l1_y1 - l1_y2) * x) < 0 &&
-      (x * (l1_y1 - l2_y1)) * (x * (l1_y2 - l2_y1) + (l2_y1 - l2_y2) * x) < 0
+    (l1_y1 - l2_y1) * (l1_y2 - l2_y2) < 0
   end
 end
 
