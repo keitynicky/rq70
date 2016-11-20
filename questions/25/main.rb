@@ -38,26 +38,22 @@ module Q25
   end
 
   def cross_count(l)
-    tmp = {}
-    l.each do |i|
-      hoge = (l - [i]).select do |x|
-        if x.uniq.size == 1
-          x.min > i.min && x.max < i.max
-        else
-          if i.first > i.last
-            x.first < i.first && x.last > i.last
-          else
-            x.first > i.first && x.last < i.last
-          end
-        end
-      end
-      hoge.each do |h|
-        key = [i, h].sort
-        tmp[key] ||= 1
-      end
+    count = 0
+    l.combination(2) do |item|
+      count += 1 if crossing? 0, item.first.first, 1, item.first.last, 0, item.last.first, 1, item.last.last
     end
-    tmp.values.inject(:+)
+    count
   end
+end
+
+def crossing?(line1_ax, line1_ay, line1_bx, line1_by, line2_ax, line2_ay, line2_bx, line2_by)
+	if ((line1_ax - line1_bx) * (line2_ay - line1_ay) + (line1_ay - line1_by) * (line1_ax - line2_ax)) * ((line1_ax - line1_bx) * (line2_by - line1_ay) + (line1_ay - line1_by) * (line1_ax - line2_bx)) < 0
+		if ((line2_ax - line2_bx) * (line1_ay - line2_ay) + (line2_ay - line2_by) * (line2_ax - line1_ax)) * ((line2_ax - line2_bx) * (line1_by - line2_ay) + (line2_ay - line2_by) * (line2_ax - line1_bx)) < 0
+			true
+		end
+	else
+		false
+	end
 end
 
 Benchmark.bm do |x|
