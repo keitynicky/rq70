@@ -9,16 +9,16 @@ module Q25
 
   def run
     # binding.pry
-    count = 0
+    count = [0, []]
     h = (1..HOLES - 1).to_a.permutation(HOLES - 1).to_a
     h.product(h) do |set|
-      keep = set.transpose.flatten
-      xx = [[0, keep.first]]
-      keep.each_index do |i|
-        xx << [keep[i], (i + 1) == keep.size ? 0 : keep[i + 1]]
+      candidates = set.transpose.flatten
+      shoelace = [[0, candidates.first]]
+      candidates.each_index do |i|
+        shoelace << [candidates[i], (i + 1) == candidates.size ? 0 : candidates[i + 1]]
       end
-      tmp = cross_count xx
-      count = tmp if tmp > count
+      c = cross_count shoelace
+      count = [c, shoelace] if c > count.first
     end
     count
   end
