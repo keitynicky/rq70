@@ -41,6 +41,7 @@ module Q25
     count = 0
     l.combination(2) do |item|
       count += 1 if crossing? 0, item.first.first, 1, item.first.last, 0, item.last.first, 1, item.last.last
+      # count += 1 if Line.new(item.first).crossing?(Line.new(item.last))
     end
     count
   end
@@ -54,6 +55,35 @@ def crossing?(line1_ax, line1_ay, line1_bx, line1_by, line2_ax, line2_ay, line2_
 	else
 		false
 	end
+end
+
+class Line < Struct.new :input
+
+  def x1
+    0    
+  end
+
+  def y1
+    input.first
+  end
+
+  def x2
+    1    
+  end
+
+  def y2
+    input.last
+  end
+
+  def crossing? line
+    if ((self.x1 - self.x2) * (line.y1 - self.y1) + (self.y1 - self.y2) * (self.x1 - line.x1)) * ((self.x1 - self.x2) * (line.y2 - self.y1) + (self.y1 - self.y2) * (self.x1 - line.x2)) < 0
+      if ((line.x1 - line.x2) * (self.y1 - line.y1) + (line.y1 - line.y2) * (line.x1 - self.x1)) * ((line.x1 - line.x2) * (self.y2 - line.y1) + (line.y1 - line.y2) * (line.x1 - self.x2)) < 0
+        true
+      end
+    else
+      false
+    end
+  end
 end
 
 Benchmark.bm do |x|
