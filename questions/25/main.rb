@@ -9,7 +9,7 @@ module Q25
 
   def run
     # binding.pry
-    count = [0, []]
+    ans = [0, []]
     h = (1..HOLES - 1).to_a.permutation(HOLES - 1).to_a
     h.product(h) do |set|
       candidates = set.transpose.flatten
@@ -18,9 +18,9 @@ module Q25
         shoelace << [candidates[i], (i + 1) == candidates.size ? 0 : candidates[i + 1]]
       end
       c = cross_count shoelace
-      count = [c, shoelace] if c > count.first
+      ans = [c, shoelace] if c > ans.first
     end
-    count
+    ans
   end
 
   def cross_count(l)
