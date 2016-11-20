@@ -7,16 +7,8 @@ module Q25
   HOLES = 6
   # HOLES = 3
 
-  def counts
-    @counts ||= []
-  end
-
   def run
     # binding.pry
-    test
-  end
-
-  def test
     count = 0
     h = (1..HOLES - 1).to_a.permutation(HOLES - 1).to_a
     h.product(h) do |set|
@@ -24,25 +16,19 @@ module Q25
       xx = [[0, keep.first]]
       keep.each_index do |i|
         tmp = [keep[i], (i + 1) == keep.size ? 0 : keep[i + 1]]
-        if i.even?
-          tmp = tmp.reverse
-        end
+        tmp = tmp.reverse if i.even?
         xx << tmp
       end
       tmp = cross_count xx
-      if tmp > count
-        count = tmp
-      end
+      count = tmp if tmp > count
     end
     count
   end
 
   def cross_count(l)
-    count = 0
-    l.combination(2) do |item|
-      count += 1 if crossing? item.first, item.last
+    l.combination(2).count do |item|
+      crossing? item.first, item.last
     end
-    count
   end
 
   def crossing?(line1, line2)
