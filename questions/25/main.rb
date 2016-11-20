@@ -4,8 +4,8 @@ require 'pry'
 module Q25
   module_function
 
-  # HOLES = 6
-  HOLES = 3
+  HOLES = 6
+  # HOLES = 3
 
   def run
     # binding.pry
@@ -15,9 +15,8 @@ module Q25
       candidates = set.transpose.flatten
       shoelace = [[0, candidates.first]]
       candidates.each_index do |i|
-        tmp = [candidates[i], (i + 1) == candidates.size ? 0 : candidates[i + 1]]
-        tmp = tmp.reverse if i.even?
-        shoelace << tmp 
+        shoelace << [candidates[i], (i + 1) == candidates.size ? 0 : candidates[i + 1]]
+        shoelace[-1] = shoelace.last.reverse if i.even?
       end
       c = cross_count shoelace
       ans = [c, shoelace] if c > ans.first
