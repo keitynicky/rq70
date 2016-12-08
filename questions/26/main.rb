@@ -11,6 +11,11 @@ module Q26
   OTHER_CAR = 0
   EMPTY_SPACE = nil
 
+  AREA = [
+    [1,2,3],
+    [4,5,6],
+  ]
+
   def run
     binding.pry
 
@@ -37,9 +42,25 @@ module Q26
     @move_list = [[0, 1], [0, -1], [1, 0], [-1, 0]]
   end
 
-  def next_candidates(x, y)
+  def hoge input
+    next_numbers AREA, input
+  end
+
+  def current_position(area, current)
+    area.locate2d current
+  end
+
+  def next_numbers(area, current)
+    candidates = next_positions current_position(area, current)
+    candidates.map do |item|
+      area[item.last][item.first]
+    end
+  end
+
+  def next_positions(current_position)
+    y, x = current_position.flatten
     move_list.map do |item|
-      unless x + item.first < 0 || x + item.first > WIDTH || y + item.last < 0 || y + item.last > HEIGHT
+      unless x + item.first < 0 || x + item.first >= WIDTH || y + item.last < 0 || y + item.last >= HEIGHT
         [x + item.first, y + item.last]
       end
     end.compact
@@ -47,6 +68,23 @@ module Q26
 
 end
 
+class Array
+  def locate2d test
+    r = []
+    each_index do |i|
+      row, j0 = self[i], 0
+      while row.include? test
+        if j = (row.index test)
+          r << [i, j0 + j]
+          j  += 1
+          j0 += j
+          row = row.drop j
+        end
+      end
+    end
+    r
+  end
+end
 
 =begin
 123
