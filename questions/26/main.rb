@@ -12,8 +12,7 @@ module Q26
   EMPTY_SPACE = nil
 
   def run
-    parking_area
-    # binding.pry
+    binding.pry
 
   end
 
@@ -34,8 +33,16 @@ module Q26
     ret
   end
 
-  def empty_space_route
-    
+  def move_list
+    @move_list = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+  end
+
+  def next_candidates(x, y)
+    move_list.map do |item|
+      unless x + item.first < 0 || x + item.first > WIDTH || y + item.last < 0 || y + item.last > HEIGHT
+        [x + item.first, y + item.last]
+      end
+    end.compact
   end
 
 end
@@ -59,13 +66,26 @@ end
 
 下　start + 横
 右　start + 1
+
+
+うーん、どういう切り口でいけばいいのかな？
+幅優先探索がいまいちわかっていないんだよね。。
+
+6-5-4-1
+6-5-2-3
+6-5-2-4
+6-5-2-1
+6-3-2
+
+うーん、どうしよう？？
+
 =end
 
 Benchmark.bm do |x|
   x.report do
 
     $answer = Q26.run
-    $correct = 45
+    $correct = 69
   end
 end
 
