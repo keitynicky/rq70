@@ -42,8 +42,13 @@ module Q26
     @move_list = [[0, 1], [0, -1], [1, 0], [-1, 0]]
   end
 
+  def memo
+    @memo ||= []
+  end
+
   def hoge input
-    next_numbers AREA, input
+    memo << input
+    next_numbers(AREA, input) - memo
   end
 
   def current_position(area, current)
