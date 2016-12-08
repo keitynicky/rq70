@@ -46,9 +46,17 @@ module Q26
     @memo ||= []
   end
 
-  def hoge input
-    memo << input
-    next_numbers(AREA, input) - memo
+  def hoge input, route
+    tmp = next_numbers(AREA, input) - route
+    if tmp.include?(1)
+      memo << route
+      route = []
+    else
+      route << input
+      tmp.each do |item|
+        hoge item, route
+      end
+    end
   end
 
   def current_position(area, current)
