@@ -15,6 +15,8 @@ module Q27
     binding.pry
   end
 
+  # 線で順番を持つ。
+
   def hoge(current)
     nexts = next_directions current
   end
