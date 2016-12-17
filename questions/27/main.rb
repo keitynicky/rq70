@@ -27,16 +27,28 @@ module Q27
     end
   end
 
+  def count
+    @count ||= 0
+  end
+
   def mark(next_d)
     set_next_position(next_d)
     if enable_use? position
       if %(t b).include? next_d
-        h_list[position[0]][position[-1]] = 1
+        h_list[position[0] - 1][position[-1]] = 1
       else
         w_list[position[0]][position[-1]] = 1
       end
+      if position == [WIDTH - 1, 0]
+        count += 1
+        init
+      else
+        next_directions(next_d).each do |item|
+          mark item
+        end
+      end
     else
-
+      init
     end
   end
 
@@ -56,12 +68,25 @@ module Q27
     [current, direction.rotate!(direction.index(current))[1]]
   end
 
+  def init
+    w_list = init_w_list
+    h_list = init_h_list
+  end
+
   def w_list
-    @w_list ||= list HEIGHT + 1, WIDTH
+    @w_list ||= init_w_list
+  end
+
+  def init_w_list
+    list HEIGHT + 1, WIDTH
   end
 
   def h_list
-    @h_list ||= list HEIGHT, WIDTH + 1
+    @h_list ||= init_h_list
+  end
+
+  def init_h_list
+    list HEIGHT, WIDTH + 1
   end
 
   def list(p1, p2)
