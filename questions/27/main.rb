@@ -4,40 +4,36 @@ require 'pry'
 module Q27
   module_function
 
-  # WIDTH = 6
-  WIDTH = 2
-  # HEIGHT = 4
-  HEIGHT = 2
+  WIDTH = 6
+  # WIDTH = 3
+  HEIGHT = 4
+  # HEIGHT = 2
 
   def run
     start = 'r'
-    # hoge start
-    binding.pry
+    fuga start, [[[0,0],[1,0]]]
+    memo.length
+    # binding.pry
   end
-
-  # def line
-  #   @line ||= []
-  # end
 
   def memo
     @memo ||= []
   end
 
-  def fuga(next_d, line, position)
-    tmp = hoge next_d, position
-    if can_use? tmp, line
-      position = Array.new(tmp.last)
-      line << tmp
-      if is_goal? tmp.last
-        unless memo.include? line
-          @memo << line
-          fuga "r", [], [0,0]
+  def fuga(next_d, line)
+    next_directions(next_d).each do |d|
+      tmp = hoge d, line.last.last
+      if can_use? tmp, line
+        l = Array.new(line)
+        l << tmp
+        if is_goal? tmp.last
+          unless memo.include? l
+            @memo << l
+          end
+        else
+          fuga d, l
         end
-      else
-        next_directions(next_d).each do |d|
-          fuga d, line, position
-        end
-      end
+      end      
     end
   end
 
@@ -54,25 +50,21 @@ module Q27
     tmp
   end
 
-  def count
-    @count ||= 0
-  end
-
   def can_use? next_line, line
-    in_range?(next_line.last) && !line.include?(next_line)
+    in_range?(next_line.last) && !already_used?(next_line, line) && next_line.last != [0,0] && line.last.last != [WIDTH, HEIGHT]
   end 
 
   def in_range?(position)
     position[0] <= WIDTH && position[-1] <= HEIGHT && position[0] >= 0 && position[-1] >= 0
   end
 
+  def already_used? next_line, line
+    line.include?(next_line) || line.include?(next_line.reverse)
+  end
+
   def is_goal?(position)
     (position[0] == WIDTH) && (position[-1] == HEIGHT)
   end
-
-  # def position
-  #   @position ||= [0, 0]
-  # end
 
   def direction
     @direction ||= %w(t l b r)
