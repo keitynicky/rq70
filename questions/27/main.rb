@@ -15,36 +15,33 @@ module Q27
     binding.pry
   end
 
-  def line
-    @line ||= []
-  end
+  # def line
+  #   @line ||= []
+  # end
 
   def memo
     @memo ||= []
   end
 
-  def fuga(next_d)
-    tmp = hoge next_d
-    if can_use? tmp
-      @position = Array.new(tmp.last)
+  def fuga(next_d, line, position)
+    tmp = hoge next_d, position
+    if can_use? tmp, line
+      position = Array.new(tmp.last)
       line << tmp
       if is_goal? tmp.last
-        binding.pry
         unless memo.include? line
           @memo << line
-          @line = []
-          @position = Array.new([0, 0])
-          fuga "r"
+          fuga "r", [], [0,0]
         end
       else
         next_directions(next_d).each do |d|
-          fuga d
+          fuga d, line, position
         end
       end
     end
   end
 
-  def hoge(next_d)
+  def hoge(next_d, position)
     tmp = []
     tmp.push position
     x = Array.new(position)
@@ -61,7 +58,7 @@ module Q27
     @count ||= 0
   end
 
-  def can_use? next_line
+  def can_use? next_line, line
     in_range?(next_line.last) && !line.include?(next_line)
   end 
 
@@ -73,9 +70,9 @@ module Q27
     (position[0] == WIDTH) && (position[-1] == HEIGHT)
   end
 
-  def position
-    @position ||= [0, 0]
-  end
+  # def position
+  #   @position ||= [0, 0]
+  # end
 
   def direction
     @direction ||= %w(t l b r)
