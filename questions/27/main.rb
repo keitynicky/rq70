@@ -5,9 +5,9 @@ module Q27
   module_function
 
   # WIDTH = 6
-  WIDTH = 1
+  WIDTH = 2
   # HEIGHT = 4
-  HEIGHT = 1
+  HEIGHT = 2
 
   def run
     start = 'r'
@@ -15,51 +15,66 @@ module Q27
     binding.pry
   end
 
-  # 線で順番を持つ。
-
-  def hoge(current)
-    nexts = next_directions current
+  def line
+    @line ||= []
   end
 
-  def set_next_position(next_d)
-    if %(t b).include? next_d
-      position[-1] += next_d == 't' ? 1 : -1
-    else
-      position[0] += next_d == 'r' ? 1 : -1
+  def memo
+    @memo ||= []
+  end
+
+  def fuga(next_d)
+    tmp = hoge next_d
+    if can_use? tmp
+      @position = Array.new(tmp.last)
+      line << tmp
+      if is_goal? tmp.last
+        binding.pry
+        unless memo.include? line
+          @memo << line
+          @line = []
+          @position = Array.new([0, 0])
+          fuga "r"
+        end
+      else
+        next_directions(next_d).each do |d|
+          fuga d
+        end
+      end
     end
+  end
+
+  def hoge(next_d)
+    tmp = []
+    tmp.push position
+    x = Array.new(position)
+    if %(t b).include? next_d
+      x[-1] += next_d == 't' ? 1 : -1
+    else
+      x[0] += next_d == 'r' ? 1 : -1
+    end
+    tmp.push x
+    tmp
   end
 
   def count
     @count ||= 0
   end
 
-  def mark(next_d)
-    set_next_position(next_d)
-    if enable_use? position
-      if %(t b).include? next_d
-        h_list[position[0] - 1][position[-1]] = 1
-      else
-        w_list[position[0]][position[-1]] = 1
-      end
-      if position == [WIDTH - 1, 0]
-        count += 1
-        init
-      else
-        next_directions(next_d).each do |item|
-          mark item
-        end
-      end
-    else
-      init
-    end
-  end
+  def can_use? next_line
+    in_range?(next_line.last) && !line.include?(next_line)
+  end 
 
-  def enable_use?(position)
+  def in_range?(position)
     position[0] <= WIDTH && position[-1] <= HEIGHT && position[0] >= 0 && position[-1] >= 0
   end
 
+  def is_goal?(position)
+    (position[0] == WIDTH) && (position[-1] == HEIGHT)
+  end
+
   def position
-    @position ||= [0, HEIGHT - 1]
+    @position ||= [0, 0]
   end
 
   def direction
@@ -68,31 +83,6 @@ module Q27
 
   def next_directions(current)
     [current, direction.rotate!(direction.index(current))[1]]
-  end
-
-  def init
-    w_list = init_w_list
-    h_list = init_h_list
-  end
-
-  def w_list
-    @w_list ||= init_w_list
-  end
-
-  def init_w_list
-    list HEIGHT + 1, WIDTH
-  end
-
-  def h_list
-    @h_list ||= init_h_list
-  end
-
-  def init_h_list
-    list HEIGHT, WIDTH + 1
-  end
-
-  def list(p1, p2)
-    Array.new(p1) { |i| Array.new(p2, 0)}
   end
 end
 
