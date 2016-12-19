@@ -4,10 +4,10 @@ require 'pry'
 module Q27
   module_function
 
-  WIDTH = 6
-  # # WIDTH = 3
-  HEIGHT = 4
-  # # HEIGHT = 2
+  # # WIDTH = 6
+  WIDTH = 3
+  # # HEIGHT = 4
+  HEIGHT = 2
 
   def run
     start = 'r'
@@ -21,12 +21,12 @@ module Q27
   end
 
   def stock_routes(next_d, line)
-    next_directions(next_d).each do |d|
+    candidates(next_d).each do |d|
       tmp = next_position d, line.last.last
       next unless can_use? tmp, line
       l = Array.new(line)
       l << tmp
-      if is_goal? tmp.last
+      if goal? tmp.last
         @memo << l unless memo.include? l
       else
         stock_routes d, l
@@ -52,14 +52,14 @@ module Q27
   end
 
   def in_range?(position)
-    position[0] <= WIDTH && position[-1] <= HEIGHT && position[0] >= 0 && position[-1] >= 0
+    position.zip([WIDTH, HEIGHT]).all? { |a, b| a <= b } && position.all? { |a| a >= 0 }
   end
 
   def already_used?(next_line, line)
     line.include?(next_line) || line.include?(next_line.reverse)
   end
 
-  def is_goal?(position)
+  def goal?(position)
     (position[0] == WIDTH) && (position[-1] == HEIGHT)
   end
 
@@ -67,7 +67,7 @@ module Q27
     @direction ||= %w(t l b r)
   end
 
-  def next_directions(current)
+  def candidates(current)
     [current, direction.rotate!(direction.index(current))[1]]
   end
 end
