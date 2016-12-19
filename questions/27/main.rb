@@ -8,7 +8,7 @@ module Q27
   # # WIDTH, HEIGHT = 6, 4
 
   def run
-    start = 'r'
+    start = direction[-1]
     stock_routes start, [[[0, 0], [1, 0]]]
     memo.length
     # # binding.pry
@@ -18,13 +18,13 @@ module Q27
     @memo ||= []
   end
 
-  def stock_routes(next_d, path)
-    candidates(next_d).each do |d|
-      tmp = lineosition d, path.last.last
-      next unless can_use? tmp, path
+  def stock_routes(current_direction, path)
+    candidates(current_direction).each do |d|
+      line = next_line d, path.last.last
+      next unless can_use? line, path
       l = Array.new(path)
-      l << tmp
-      if goal? tmp.last
+      l << line
+      if goal? line.last
         @memo << l unless memo.include? l
       else
         stock_routes d, l
@@ -32,16 +32,17 @@ module Q27
     end
   end
 
-  def lineosition(next_d, point)
-    tmp = []
-    tmp.push point
-    x = Array.new(point)
-    if %(t b).include? next_d
-      x[-1] += next_d == 't' ? 1 : -1
+  def next_line(current_direction, point)
+    [point, next_point(current_direction, point)]
+  end
+
+  def next_point(current_direction, point)
+    tmp = Array.new(point)
+    if %(t b).include? current_direction
+      tmp[-1] += current_direction == 't' ? 1 : -1
     else
-      x[0] += next_d == 'r' ? 1 : -1
+      tmp[0] += current_direction == 'r' ? 1 : -1
     end
-    tmp.push x
     tmp
   end
 
