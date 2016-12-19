@@ -36,18 +36,17 @@ module Q27
     [point, next_point(current_direction, point)]
   end
 
-  def next_point(current_direction, point)
+  def next_point(direction, point)
     x, y = point
-    if top_or_bottom? current_direction
-      y += move current_direction, 't'
+    if top_or_bottom? direction
+      [x,  y + move(direction, 't')]
     else
-      x += move current_direction, 'r'
+      [x + move(direction, 'r'), y]
     end
-    [x, y]
   end
 
-  def move(current_direction, increase)
-    current_direction == increase ? 1 : -1
+  def move(direction, increase)
+    direction == increase ? 1 : -1
   end
 
   def top_or_bottom?(current_direction)
