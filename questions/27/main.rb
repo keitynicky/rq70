@@ -4,10 +4,8 @@ require 'pry'
 module Q27
   module_function
 
-  # # WIDTH = 6
-  WIDTH = 3
-  # # HEIGHT = 4
-  HEIGHT = 2
+  WIDTH, HEIGHT = 3, 2
+  # # WIDTH, HEIGHT = 6, 4
 
   def run
     start = 'r'
@@ -48,7 +46,7 @@ module Q27
   end
 
   def can_use?(line, path)
-    in_range?(line.last) && not_used?(line, path) && not_start_and_end?(line, path)
+    in_range?(line.last) && not_used?(line, path) && !start_or_end?(line, path)
   end
 
   def in_range?(point)
@@ -59,8 +57,8 @@ module Q27
     !(path.include?(line) || path.include?(line.reverse))
   end
 
-  def not_start_and_end?(line, path)
-    line.last != [0, 0] && !goal?(path.last.last)
+  def start_or_end?(line, path)
+    line.last == [0, 0] || goal?(path.last.last)
   end
 
   def goal?(point)
