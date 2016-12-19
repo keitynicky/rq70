@@ -20,11 +20,11 @@ module Q27
     @memo ||= []
   end
 
-  def stock_routes(next_d, line)
+  def stock_routes(next_d, path)
     candidates(next_d).each do |d|
-      tmp = next_position d, line.last.last
-      next unless can_use? tmp, line
-      l = Array.new(line)
+      tmp = lineosition d, path.last.last
+      next unless can_use? tmp, path
+      l = Array.new(path)
       l << tmp
       if goal? tmp.last
         @memo << l unless memo.include? l
@@ -34,10 +34,10 @@ module Q27
     end
   end
 
-  def next_position(next_d, position)
+  def lineosition(next_d, point)
     tmp = []
-    tmp.push position
-    x = Array.new(position)
+    tmp.push point
+    x = Array.new(point)
     if %(t b).include? next_d
       x[-1] += next_d == 't' ? 1 : -1
     else
@@ -47,20 +47,24 @@ module Q27
     tmp
   end
 
-  def can_use?(next_line, line)
-    in_range?(next_line.last) && !already_used?(next_line, line) && next_line.last != [0, 0] && line.last.last != [WIDTH, HEIGHT]
+  def can_use?(line, path)
+    in_range?(line.last) && not_used?(line, path) && not_start_and_end?(line, path)
   end
 
-  def in_range?(position)
-    position.zip([WIDTH, HEIGHT]).all? { |a, b| a <= b } && position.all? { |a| a >= 0 }
+  def in_range?(point)
+    point.zip([WIDTH, HEIGHT]).all? { |a, b| a <= b } && point.all? { |a| a >= 0 }
   end
 
-  def already_used?(next_line, line)
-    line.include?(next_line) || line.include?(next_line.reverse)
+  def not_used?(line, path)
+    !(path.include?(line) || path.include?(line.reverse))
   end
 
-  def goal?(position)
-    (position[0] == WIDTH) && (position[-1] == HEIGHT)
+  def not_start_and_end?(line, path)
+    line.last != [0, 0] && !goal?(path.last.last)
+  end
+
+  def goal?(point)
+    point == [WIDTH, HEIGHT]
   end
 
   def direction
