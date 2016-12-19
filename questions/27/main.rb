@@ -8,8 +8,9 @@ module Q27
   # # WIDTH, HEIGHT = 6, 4
 
   def run
-    start = direction[-1]
-    stock_routes start, [[[0, 0], [1, 0]]]
+    start_direction = direction[-1]
+    start_path = [[[0, 0], [1, 0]]]
+    stock_routes start_direction, start_path
     memo.length
     # # binding.pry
   end
