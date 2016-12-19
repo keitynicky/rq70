@@ -10,7 +10,7 @@ module Q27
   def run
     start_direction = direction[-1]
     start_path = [[[0, 0], [1, 0]]]
-    stock_routes start_direction, start_path
+    stock_paths start_direction, start_path
     memo.length
     # # binding.pry
   end
@@ -19,16 +19,15 @@ module Q27
     @memo ||= []
   end
 
-  def stock_routes(current_direction, path)
+  def stock_paths(current_direction, current_path)
     candidates(current_direction).each do |d|
-      line = next_line d, path.last.last
-      next unless can_use? line, path
-      l = Array.new(path)
-      l << line
-      if goal? line.last
-        @memo << l unless memo.include? l
+      candidate_line = next_line d, current_path.last.last
+      next unless can_use? candidate_line, current_path
+      total_path = Array.new([*current_path, candidate_line])
+      if goal? total_path.last.last
+        @memo << total_path unless memo.include? total_path
       else
-        stock_routes d, l
+        stock_paths d, total_path
       end
     end
   end
