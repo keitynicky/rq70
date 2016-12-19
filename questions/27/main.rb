@@ -46,7 +46,7 @@ module Q27
   end
 
   def can_use?(line, path)
-    in_range?(line.last) && not_used?(line, path) && !start_or_end?(line, path)
+    in_range?(line.last) && not_used?(line, path) && !start_or_end?(line.last, path)
   end
 
   def in_range?(point)
@@ -54,11 +54,11 @@ module Q27
   end
 
   def not_used?(line, path)
-    !(path.include?(line) || path.include?(line.reverse))
+    !path.any? { |l| [line, line.reverse].include?(l) }
   end
 
-  def start_or_end?(line, path)
-    line.last == [0, 0] || goal?(path.last.last)
+  def start_or_end?(point, path)
+    point == [0, 0] || goal?(path.last.last)
   end
 
   def goal?(point)
