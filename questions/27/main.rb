@@ -11,7 +11,7 @@ module Q27
 
   def run
     start = 'r'
-    fuga start, [[[0, 0], [1, 0]]]
+    stock_routes start, [[[0, 0], [1, 0]]]
     memo.length
     # # binding.pry
   end
@@ -20,21 +20,21 @@ module Q27
     @memo ||= []
   end
 
-  def fuga(next_d, line)
+  def stock_routes(next_d, line)
     next_directions(next_d).each do |d|
-      tmp = hoge d, line.last.last
+      tmp = next_position d, line.last.last
       next unless can_use? tmp, line
       l = Array.new(line)
       l << tmp
       if is_goal? tmp.last
         @memo << l unless memo.include? l
       else
-        fuga d, l
+        stock_routes d, l
       end
     end
   end
 
-  def hoge(next_d, position)
+  def next_position(next_d, position)
     tmp = []
     tmp.push position
     x = Array.new(position)
