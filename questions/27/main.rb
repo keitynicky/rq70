@@ -4,8 +4,8 @@ require 'pry'
 module Q27
   module_function
 
-  # WIDTH, HEIGHT = 3, 2
-  WIDTH, HEIGHT = 6, 4
+  WIDTH, HEIGHT = 3, 2
+  # # WIDTH, HEIGHT = 6, 4
 
   def run
     start = direction[-1]
@@ -37,13 +37,17 @@ module Q27
   end
 
   def next_point(current_direction, point)
-    w, h = point
+    x, y = point
     if top_or_bottom? current_direction
-      h += current_direction == 't' ? 1 : -1
+      y += move current_direction, 't'
     else
-      w += current_direction == 'r' ? 1 : -1
+      x += move current_direction, 'r'
     end
-    [w, h]
+    [x, y]
+  end
+
+  def move(current_direction, increase)
+    current_direction == increase ? 1 : -1
   end
 
   def top_or_bottom?(current_direction)
