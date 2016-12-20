@@ -59,7 +59,7 @@ module Q27
   end
 
   def in_range?(point)
-    (0..WIDTH).cover?(point[0]) && (0..HEIGHT).cover?(point[-1])
+    point.zip([WIDTH, HEIGHT]).all? { |a, b| a <= b && 0 <= a }
   end
 
   def not_used?(line, path)
