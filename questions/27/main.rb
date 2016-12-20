@@ -62,7 +62,7 @@ module Q27
   end
 
   def not_used?(line, path)
-    !path.any? { |l| [line, line.reverse].include?(l) }
+    path.none? { |l| [line, line.reverse].include?(l) }
   end
 
   def start_or_end?(point, path)
