@@ -24,8 +24,9 @@ module Q27
     candidates(current_direction).each do |d|
       candidate_line = next_line d, current_path.last.last
       next unless can_use? candidate_line, current_path
-      total_path = Array.new([*current_path, candidate_line])
+      total_path = [*current_path, candidate_line]
       if goal? total_path.last.last
+        # Setを使うとより早くなる
         @memo << total_path unless memo.include? total_path
       else
         stock_paths d, total_path
