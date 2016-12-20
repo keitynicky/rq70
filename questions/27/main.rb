@@ -5,7 +5,8 @@ module Q27
   module_function
 
   # # WIDTH, HEIGHT = 3, 2
-  WIDTH, HEIGHT = 6, 4
+  WIDTH = 6
+  HEIGHT = 4
 
   def run
     start_direction = direction[-1]
@@ -58,7 +59,7 @@ module Q27
   end
 
   def in_range?(point)
-    (0..WIDTH).include?(point[0]) && (0..HEIGHT).include?(point[-1])
+    (0..WIDTH).cover?(point[0]) && (0..HEIGHT).cover?(point[-1])
   end
 
   def not_used?(line, path)
